@@ -1,17 +1,31 @@
 name: Test Code
+
 on:
   pull_request:
   push:
-    branches:
-      - develop/*
+    branches-ignore:
+      - main
 
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+#Sets environment var CI to false to prevent error from warnings
 env:
   CI: false
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  validateDependencies:
+  Validate-Dev-Changes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -28,8 +42,8 @@ jobs:
       - name: Test coverage
         run: npm run test
 
-  deploy:
-    needs: validateDependencies
+  QA-deploy:
+    needs: Validate-Dev-Changes
     environment:
       name: QA
     runs-on: ubuntu-latest
@@ -48,5 +62,5 @@ jobs:
       - name: Build
         run: CI=false npm run build
 
-      - name: deploy netlify
-        run: netlify deploy --prod --auth ${{secrets.USERID}} --site ${{secrets.SITEID}}
+      - name: deploy to QA env --> Netlify
+        run: netlify deploy --prod --auth ${{secrets.USERID}} --site ${{ secrets.SITEID }}
