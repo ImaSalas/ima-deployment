@@ -4,17 +4,49 @@ on:
   push:
     branches:
       - develop/*
+
+  workflow_dispatch:
+
+env:
+  CI: false
+
 jobs:
-  test-code:
+  validateDependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+
       - name: Install Dependencies
         run: npm install
+
       - name: Test Lint
         run: npm run lint
+
       - name: Test coverage
         run: npm run test
+
+  deploy:
+    needs: validateDependencies
+    environment:
+      name: QA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run test
+        run: npm run test
+
+      - name: Build
+        run: CI=false npm run build
+
+      - name: deploy netlify
+        run: netlify deploy --prod --auth ${{secrets.IMAQA}} --site ${{secrets.SITEID}}
