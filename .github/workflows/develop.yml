@@ -11,7 +11,7 @@ env:
   CI: false
 
 jobs:
-   validateDependencies:
+  validateDependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
 
       - name: Test coverage
         run: npm run test
-        
+
   deploy:
     needs: validateDependencies
     environment:
@@ -53,4 +53,3 @@ jobs:
 
       - name: deploy to QA env --> Netlify
         run: netlify deploy --prod --auth ${{secrets.IMAQA}} --site ${{secrets.SITEID}}
-
