@@ -45,11 +45,8 @@ jobs:
       - name: Run test
         run: npm run test
 
-      - name: Set Homepage
-        run: npm run setHomepage
-
       - name: Build
         run: CI=false npm run build
 
-      - name: deploy to QA env --> Netlify
+      - name: deploy netlify
         run: netlify deploy --prod --auth ${{secrets.IMAQA}} --site ${{secrets.SITEID}}
