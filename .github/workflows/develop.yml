@@ -15,7 +15,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build
-        run: CI=false npm run build
+        run: CI= false npm run build
       - name: Deploy
         run: netlify deploy --prod --auth ${{ secrets.IMAQA }} --site ${{ secrets.SITEID }}
       - name: Test Lint
