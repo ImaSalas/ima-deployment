@@ -27,8 +27,8 @@ jobs:
 
       - name: Test coverage
         run: npm run test
-
-  Deploy:
+        
+  deploy:
     needs: validateDependencies
     environment:
       name: QA
