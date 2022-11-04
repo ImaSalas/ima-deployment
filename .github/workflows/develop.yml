@@ -11,20 +11,46 @@ env:
   CI: false
 
 jobs:
-  test-code:
+   validateDependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+
       - name: Install Dependencies
         run: npm install
-      - name: Build
-        run: CI=false npm run build
-      - name: Deploy
-        run: netlify deploy --prod --auth ${{secrets.IMAQA}} --site ${{secrets.SITEID}}
+
       - name: Test Lint
         run: npm run lint
+
       - name: Test coverage
         run: npm run test
+
+  Deploy:
+    needs: validateDependencies
+    environment:
+      name: QA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run test
+        run: npm run test
+
+      - name: Set Homepage
+        run: npm run setHomepage
+
+      - name: Build
+        run: CI=false npm run build
+
+      - name: deploy to QA env --> Netlify
+        run: netlify deploy --prod --auth ${{secrets.IMAQA}} --site ${{secrets.SITEID}}
+
