@@ -14,7 +14,30 @@ jobs:
           node-version: "16"
       - name: Install Dependencies
         run: npm install
+      - name: Build
+        run: CI=false npm run build
+      - name: Deploy
+        run: netlify deploy --prod --auth ${{ secrets.IMAQA }} --site ${{ secrets.SITEID }}
       - name: Test Lint
         run: npm run lint
       - name: Test coverage
         run: npm run test
+
+ PR-Management:
+    needs: QA-deploy
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Get Branch Name
+        id: get-branch
+        uses: ypicard/get-branch-name-github-action@v1
+
+      - name: pull-request
+        run: gh pr create --base main --head ${{ steps.get-branch.outputs.branch }} --title "Pulling ${{ steps.get-branch.outputs.branch }} into main" --body "Automated PR"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
