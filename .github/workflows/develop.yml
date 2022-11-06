@@ -25,7 +25,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Validate-Dev-Changes:
+  Dependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -42,8 +42,8 @@ jobs:
       - name: Test coverage
         run: npm run test
 
-  QA-deploy:
-    needs: Validate-Dev-Changes
+  QA:
+    needs: Dependencies
     environment:
       name: QA
     runs-on: ubuntu-latest
@@ -53,14 +53,35 @@ jobs:
         with:
           node-version: "16"
 
-      - name: Install Dependencies
+      - name: Dependencies
         run: npm install
 
       - name: Run test
         run: npm run test
 
+      - name: Set Homepage
+        run: npm run setHomepage
+
       - name: Build
         run: CI=false npm run build
 
-      - name: deploy to QA env --> Netlify
+      - name: deploy to Netlify
         run: netlify deploy --prod --auth wFPCZWTDO6vUIFN0CHeZwDp0uqV94LHZ_DvdlbFYasY --site 8cf46c03-4b08-4851-8c88-1e2a89588e52
+
+  PushNetli:
+    needs: QA
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Get Branch Name
+        id: get-branch
+        uses: ypicard/get-branch-name-github-action@v1
+
+      - name: pull-request
+        run: gh pr create --base main --head ${{ steps.get-branch.outputs.branch }} --title "Pulling ${{ steps.get-branch.outputs.branch }} into main" --body "Automated PR"
+        env:
+          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
