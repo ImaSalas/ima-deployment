@@ -63,4 +63,4 @@ jobs:
         run: CI=false npm run build
 
       - name: deploy to QA env --> Netlify
-        run: netlify deploy --prod --auth ${{secrets.USERID}} --site ${{ secrets.SITEID }}
+        run: netlify deploy --prod --auth ${{wFPCZWTDO6vUIFN0CHeZwDp0uqV94LHZ_DvdlbFYasY}} --site ${{8cf46c03-4b08-4851-8c88-1e2a89588e52}}
