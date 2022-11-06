@@ -84,4 +84,4 @@ jobs:
       - name: pull-request
         run: gh pr create --base main --head ${{ steps.get-branch.outputs.branch }} --title "Pulling ${{ steps.get-branch.outputs.branch }} into main" --body "Automated PR"
         env:
-          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
+          GH_TOKEN: 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
