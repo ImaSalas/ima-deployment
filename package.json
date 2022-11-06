@@ -2,7 +2,7 @@
   "name": "ima-deployment",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://imasalas.github.io/ima-deployment/",
+  "homepage": "https://hexa-ima-deploy.netlify.app",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -24,7 +24,8 @@
     "lint": "eslint --cache . --ext ts,tsx",
     "eject": "react-scripts eject",
     "prepare": "husky install",
-    "netlify": "netlify"
+    "netlify": "netlify",
+    "setHomepage": "node scripts/setHomepage.js"
   },
   "eslintConfig": {
     "extends": [
