@@ -60,7 +60,7 @@ jobs:
         run: npm run test
 
       - name: Set Homepage
-        run: npm run updateHomepage
+        run: npm run setHomepage
 
       - name: Build
         run: CI=false npm run build
