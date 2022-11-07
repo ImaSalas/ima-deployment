@@ -66,7 +66,7 @@ jobs:
         run: CI=false npm run build
 
       - name: deploy to Netlify
-        run: netlify deploy --prod --auth wFPCZWTDO6vUIFN0CHeZwDp0uqV94LHZ_DvdlbFYasY --site 8cf46c03-4b08-4851-8c88-1e2a89588e52
+        run: netlify deploy --prod --auth ${{ secrets.NETLIFY_ID }} --site ${{ secrets.SITE_ID }}
 
   PushNetli:
     needs: QA
