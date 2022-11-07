@@ -10,6 +10,16 @@ function App() {
         <p>Imanol Salas</p>
         <br />
         <p>CI/CD</p>
+        <p>
+          Hello there:{" "}
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          >
+            ✨
+          </a>{" "}
+        </p>
         <a
           className="App-link"
           href="https://reactjs.org"
