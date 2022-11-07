@@ -9,7 +9,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>Imanol Salas</p>
         <br />
-        <p>CI/CD</p>
+        <p>Test CI/CD</p>
         <a
           className="App-link"
           href="https://reactjs.org"
